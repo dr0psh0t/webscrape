@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Input {
@@ -12,7 +13,8 @@ public class Input {
 
         //parseDocumentFromString();
         //parseBodyFragment();
-        loadDocumentFromURL();
+        //loadDocumentFromURL();
+        loadDocumentFromFile();
     }
 
     public static void parseDocumentFromString() {
@@ -39,5 +41,22 @@ public class Input {
         Document doc = Jsoup.connect("http://example.com/").get();
         String title = doc.title();
         System.out.println(title);
+
+        Document doc2 = Jsoup.connect("http://example.com")
+                .data("query", "Java")
+                .userAgent("Mozilla")
+                .cookie("auth", "token")
+                .timeout(3000)
+                .post();
+
+        System.out.println(doc2.title());
+    }
+
+    public static void loadDocumentFromFile() throws IOException {
+
+        File input = new File("/Users/fst.user/Desktop/index.html");
+        Document doc = Jsoup.parse(input, "UTF-8", "http://example.com/");
+
+        System.out.println(doc.title());
     }
 }
