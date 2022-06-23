@@ -1,0 +1,62 @@
+https://html.spec.whatwg.org/multipage/forms.html
+correct forms must have:
+    1.  <form> element must have opening <form> and closing tag </form>
+    2.  <form> element must have method attribute of:
+            POST
+            GET
+    3.  <form> element must have enctype for form data encoding of:
+            application/x-www-form-urlencoded
+            multipart/form-data
+            text/plain
+    4.  <form> element must have action attribute for URL service
+    5.  <form> element must have <input/> tag for form controls
+    6.  each <input /> must have type attribute of:
+            <input type="button">
+            <input type="checkbox">
+            <input type="color">
+            <input type="date">
+            <input type="datetime-local">
+            <input type="email">
+            <input type="file">
+            <input type="hidden">
+            <input type="image">
+            <input type="month">
+            <input type="number">
+            <input type="password">
+            <input type="radio">
+            <input type="range">
+            <input type="reset">
+            <input type="search">
+            <input type="submit">
+            <input type="tel">
+            <input type="text">
+            <input type="time">
+            <input type="url">
+            <input type="week">
+    7.  each <input /> must have a name attribute
+    8.  <form> must have <input type="button" /> or <button></button> as submit button for forms
+
+
+<form method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi">
+ <p><label>Customer name: <input name="custname"></label></p>
+ <p><label>Telephone: <input type=tel name="custtel"></label></p>
+ <p><label>Email address: <input type=email name="custemail"></label></p>
+ <fieldset>
+  <legend> Pizza Size </legend>
+  <p><label> <input type=radio name=size value="small"> Small </label></p>
+  <p><label> <input type=radio name=size value="medium"> Medium </label></p>
+  <p><label> <input type=radio name=size value="large"> Large </label></p>
+ </fieldset>
+ <fieldset>
+  <legend> Pizza Toppings </legend>
+  <p><label> <input type=checkbox name="topping" value="bacon"> Bacon </label></p>
+  <p><label> <input type=checkbox name="topping" value="cheese"> Extra Cheese </label></p>
+  <p><label> <input type=checkbox name="topping" value="onion"> Onion </label></p>
+  <p><label> <input type=checkbox name="topping" value="mushroom"> Mushroom </label></p>
+ </fieldset>
+ <p><label>Preferred delivery time: <input type=time min="11:00" max="21:00" step="900" name="delivery"></label></p>
+ <p><label>Delivery instructions: <textarea name="comments"></textarea></label></p>
+ <p><button>Submit order</button></p>
+</form>

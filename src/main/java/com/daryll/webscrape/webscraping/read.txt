@@ -1,0 +1,22 @@
+1st Week
+- Study JSoup and Scraping
+- Come Up with a solution on how to scrape a form, not actual code. Problems to Solve
+	- Identifying the correct form within a page
+	- Identifying the correct form from multiple pages
+
+2nd Week
+- Project walk through
+- Study Project
+	- Scraping
+	- Submission
+	- Crawling
+
+3rd ~ 5th Week
+- Code clean up separation of submission and scraping
+	- Page scraping
+	- Page forms scoring
+	- Page scoring
+	- Submission
+
+6th Week
+- Recaptcha Rework
