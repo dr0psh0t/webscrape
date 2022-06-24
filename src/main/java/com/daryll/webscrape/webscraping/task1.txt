@@ -1,0 +1,71 @@
+1.  Summary
+
+    Although a solution already exist, not introducing that solution would increase the
+    chances of a better solution will be presented.
+
+2.  Problem
+
+    Our service main idea is to contact companies through their “Contact Us Form”. So a
+    certain client of ours would like to contact company A, B and D. With that you will
+    have the following information:
+
+    Client Information such as:
+        Company Name
+        Subject
+        Message
+        Address
+        Contact number
+        firstname
+        lastname
+        email
+
+    List of target company information:
+        company name
+        company website
+
+3.  Probable problems that needs to be address by your solution
+
+    A website may contain multiple forms, we are interested in forms that indicate that its for
+    the “Others” form. Example, Registration Form, Contact the CEO, Other Stuff.
+    Most likely we want the Other Stuff.
+
+    A single page may contain multiple form, example: Search form, and Contact Form. We want the Contact Form.
+
+    Matching the client data to the appropriate field. Example Message data should be written
+    in the “message form field”
+
+4.  Done Definition
+
+    You are not expected to create a working code. Create a diagram, combine it with pseudo code.
+    Do what you can to present your idea. Give enough information that we can discuss the overall
+    plan on how to solve the problem above.
+
+=====
+
+given:
+    Client
+    list of Companies
+
+initialize empty list of filledDocuments
+
+loop through companies list
+	get the website
+	scrape the site and scan for contact form
+
+	    if contact form is found at the home page
+    	    fill the contact form fields with the matching client data
+    	    store modified Document to filledDocuments
+
+        else if links are found with "contact%" or "Contact%" as text
+	        scrape the contact link site and scan for contact form
+	        if contact form element is found
+	            fill the contact form fields with the matching client data
+	            store modified Document to filledDocuments
+
+        else if links are found with "Others" as text
+            scrape the "Others" link site and scan for contact form
+            if contact form element is found
+                fill the contact form fields with the matching client data
+                store modified Document to filledDocuments
+
+return filledDocuments

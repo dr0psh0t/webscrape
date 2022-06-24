@@ -1,0 +1,9 @@
+1.  Summary
+    The main library being used by the project is JSoup so it would be necessary to have
+    a good understanding on how it works. Scraping is the main process of the project as
+    well so having a good understanding on how it works would be helpful.
+
+2.  Done Definition
+    Understood how the JSoup Library works
+
+    Basic understanding of Scraping
