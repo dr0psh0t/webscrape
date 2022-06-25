@@ -42,30 +42,47 @@
 
 =====
 
-given:
-    Client
-    list of Companies
 
-initialize empty list of filledDocuments
+method scrapeContactForm(Client client, List companies)
 
-loop through companies list
-	get the website
-	scrape the site and scan for contact form
+    initialize empty list of filledDocuments
 
-	    if contact form is found at the home page
-    	    fill the contact form fields with the matching client data
-    	    store modified Document to filledDocuments
+    loop through companies list
+        get the website
+        scrape the site and scan for contact form
 
-        else if links are found with "contact%" or "Contact%" as text
-	        scrape the contact link site and scan for contact form
-	        if contact form element is found
-	            fill the contact form fields with the matching client data
-	            store modified Document to filledDocuments
-
-        else if links are found with "Others" as text
-            scrape the "Others" link site and scan for contact form
-            if contact form element is found
+            if contact form is found at the home page
                 fill the contact form fields with the matching client data
                 store modified Document to filledDocuments
 
-return filledDocuments
+            else if links are found with "contact%" or "Contact%" as text
+                scrape the contact link site and scan for contact form
+                if contact form element is found
+                    fill the contact form fields with the matching client data
+                    store modified Document to filledDocuments
+
+            else if links are found with "Others" as text
+                scrape the "Others" link site and scan for contact form
+                if contact form element is found
+                    fill the contact form fields with the matching client data
+                    store modified Document to filledDocuments
+
+    return filledDocuments
+
+=====
+
+method scrapeContactForm(Client client, List companies)
+
+    initialize empty list of filledDocuments
+
+    loop through companies list
+        scrape homepage
+        look for a text "contact us" or "contact" (ignore case)
+        if "contact us" or "contact" text is found
+            check if "contact us" or "contact" is a hyperlink
+            if "contact us" or "contact" is a hyperlink
+                scrape that "contact us" hyperlink
+            else if "contact us" or "contact" is just a text
+                scan for contact form
+
+    return filledDocuments
