@@ -11,7 +11,7 @@ public class ScrapeContactFormDemo {
 
     public static void main(String[] args) throws IOException {
 
-        MyClient myClient = new MyClient.MyClientBuilder()
+        MyClient myClient = new MyClient.Builder()
                 .companyName("Apple Inc")
                 .address("California")
                 .contactNumber("0987654321")
@@ -86,7 +86,7 @@ public class ScrapeContactFormDemo {
         private final String lastname;
         private final String email;
 
-        private MyClient(MyClientBuilder builder) {
+        private MyClient(Builder builder) {
             this.companyName = builder.companyName;
             this.subject = builder.subject;
             this.message = builder.message;
@@ -143,7 +143,7 @@ public class ScrapeContactFormDemo {
                     '}';
         }
 
-        public static class MyClientBuilder {
+        public static class Builder {
 
             private String companyName;
             private String subject;
@@ -154,42 +154,42 @@ public class ScrapeContactFormDemo {
             private String lastname;
             private String email;
 
-            public MyClientBuilder companyName(String companyName) {
+            public Builder companyName(String companyName) {
                 this.companyName = companyName;
                 return this;
             }
 
-            public MyClientBuilder subject(String subject) {
+            public Builder subject(String subject) {
                 this.subject = subject;
                 return this;
             }
 
-            public MyClientBuilder message(String message) {
+            public Builder message(String message) {
                 this.message = message;
                 return this;
             }
 
-            public MyClientBuilder address(String address) {
+            public Builder address(String address) {
                 this.address = address;
                 return this;
             }
 
-            public MyClientBuilder contactNumber(String contactNumber) {
+            public Builder contactNumber(String contactNumber) {
                 this.contactNumber = contactNumber;
                 return this;
             }
 
-            public MyClientBuilder firstname(String firstname) {
+            public Builder firstname(String firstname) {
                 this.firstname = firstname;
                 return this;
             }
 
-            public MyClientBuilder lastname(String lastname) {
+            public Builder lastname(String lastname) {
                 this.lastname = lastname;
                 return this;
             }
 
-            public MyClientBuilder email(String email) {
+            public Builder email(String email) {
                 this.email = email;
                 return this;
             }
