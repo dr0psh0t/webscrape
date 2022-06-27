@@ -41,7 +41,22 @@
     plan on how to solve the problem above.
 
 =====
+returns a Document
+method scrapeContactForm(Element formElement, Client client)
 
+    scrape form with method post
+    if found
+        loop through each inputs
+            get the <label> sibling for each input
+                if label element sibling is found
+                    get text of label to know the type of input field
+                    scrape <input> elements (ignore type=hidden) fill the input with client data
+                else if label element is not found
+                    get each name or placeholder attribute for each input
+                    scrape <input> elements (ignore type=hidden) fill input field with client data based on
+
+=====
+returns list of Documents
 method scrapeContactForm(Client client, List companies)
 
     initialize empty list of filledDocuments
@@ -54,11 +69,13 @@ method scrapeContactForm(Client client, List companies)
                 scrape that "contact us" hyperlink
                     look for a "submit" button
                     if "submit" button is found
-                        scrape the contact form and fill those fields with the client data
+                        newDoc = scrapeContactForm(formElement, client)
+                        store newDoc to filledDocuments
             else if "contact us" or "contact" is just a text
                 look for a "submit" button
                 if "submit" button is found
-                    scrape the contact form and fill those fields with the client data
+                    newDoc = scrapeContactForm(formElement, client)
+                    store newDoc to filledDocuments
 
 
     return filledDocuments

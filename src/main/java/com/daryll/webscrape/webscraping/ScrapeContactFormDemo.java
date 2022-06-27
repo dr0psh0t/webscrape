@@ -3,7 +3,9 @@ package com.daryll.webscrape.webscraping;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,22 +24,127 @@ public class ScrapeContactFormDemo {
                 .message("Greetings From Apple Inc! I have some inquiry regarding your product.")
                 .build();
 
-        Company company = new Company("HM Tower", "https://www.hmtower.com/");
+        /*Company company = new Company("HM Tower", "https://www.hmtower.com/");*/
 
         //System.out.println(myClient);
         //System.out.println(company);
 
-        test();
+        test(myClient);
     }
 
-    public static void test() throws IOException {
-        Document document = Jsoup.connect("https://www.hmtower.com/").get();
+    public static void scrapeForm(Elements forms, MyClient client) {
+        for (Element form : forms) {
+            if (form.attr("method").equalsIgnoreCase("post")) {
+                Elements inputsUnderForm = form.select("input");
+                Elements labels = form.select("label");
 
+                inputsUnderForm.forEach(eachInput -> {
 
+                    if (!labels.isEmpty()) {
+                        Elements siblingsOfInput = eachInput.siblingElements();
 
-        Element contactForm = document.selectFirst("form");
+                        siblingsOfInput.forEach(sibling -> {
+                            if (sibling.nodeName().equalsIgnoreCase("label")) {
 
-        System.out.println(contactForm.outerHtml());
+                                String lblTxt = sibling.text()
+                                        .toLowerCase()
+                                        .replaceAll("[^a-zA-Z]", "")
+                                        .replaceAll("\\s+","");
+                                System.out.println(lblTxt);
+
+                                /*
+                                if (lblTxt.equalsIgnoreCase("first")
+                                        || lblTxt.equalsIgnoreCase("firstname")) {
+                                    System.out.println(eachInput.attr("value", client.getFirstname()));
+                                } else if (lblTxt.equalsIgnoreCase("last")
+                                        || lblTxt.equalsIgnoreCase("lastname")) {
+                                    System.out.println(eachInput.attr("value", client.getLastname()));
+                                } else if (lblTxt.equalsIgnoreCase("company")
+                                        || lblTxt.equalsIgnoreCase("companyname")) {
+                                    System.out.println(eachInput.attr("value", client.getCompanyName()));
+                                } else if (lblTxt.equalsIgnoreCase("subject")) {
+                                    System.out.println(eachInput.attr("value", client.getSubject()));
+                                } else if (lblTxt.equalsIgnoreCase("message")
+                                        || lblTxt.equalsIgnoreCase("comment")
+                                        || lblTxt.equalsIgnoreCase("commentormessage")
+                                        || lblTxt.equalsIgnoreCase("messageorcomment")) {
+                                    System.out.println(eachInput.attr("value", client.getMessage()));
+                                } else if (lblTxt.equalsIgnoreCase("address")) {
+                                    System.out.println(eachInput.attr("value", client.getAddress()));
+                                } else if (lblTxt.equalsIgnoreCase("email")
+                                        || lblTxt.equalsIgnoreCase("emailaddress")) {
+                                    System.out.println(eachInput.attr("value", client.getEmail()));
+                                } else if (lblTxt.equalsIgnoreCase("phone")
+                                        || lblTxt.equalsIgnoreCase("phonenumber")
+                                        || lblTxt.equalsIgnoreCase("contact")
+                                        || lblTxt.equalsIgnoreCase("contactnumber")) {
+                                    System.out.println(eachInput.attr("value", client.getContactNumber()));
+                                }*/
+                            }
+                        });
+                    } else {
+                        System.out.println(eachInput.attr("value", "TheValue_2!"));
+                    }
+                });
+
+                break;
+            }
+        }
+    }
+
+    //public static void process
+
+    public static void test(MyClient client) throws IOException {
+
+        //String url = "https://aboitiz.com/contact-us/";
+        //String url = "https://www.baihotels.com/contact-us";
+        //String url = "https://www.fullspeedtechnologies.com/contact";
+        //String url = "https://www.hmtower.com/";
+        //String url = "https://www.tesla.com/contact";
+        //String url = "https://www.waterfronthotels.com.ph/wcch_contact/";
+        //String url = "https://www.wellmade-motors.com/contact-us/";
+        //Document document = Jsoup.connect(url).get();
+
+        //Element contactForm = document.selectFirst("form");
+        //System.out.println(contactForm.outerHtml());
+
+        //String file = "aboitiz.html";
+        //String file = "baihotel.html";
+        //String file = "fst.html";
+        //String file = "hmtower.html";
+        //String file = "tesla.html";
+        String file = "waterfront.html";
+        //String file = "wellmade.html";
+        String url = "/Users/fst.user/Documents/springboot-apps/webscrape/src/main/java/com/daryll/webscrape/contactus/";
+        Document document = Jsoup.parse(new File(url+file));
+        Elements form = document.select("form");
+        scrapeForm(form, client);
+        //System.out.println(form);
+        //System.out.println(form.size());
+
+        /*
+        Elements inputsUnderForm = form.select("input");
+        //System.out.println(inputsUnderForm);
+        //System.out.println(inputsUnderForm.size());
+        inputsUnderForm.forEach(e -> {
+            Elements siblingsOfInput = e.siblingElements();
+
+            siblingsOfInput.forEach(sibling -> {
+                System.out.println(sibling.nodeName());
+                System.out.println(sibling);
+            });
+
+            //System.out.println(e.siblingElements());
+        });
+
+        Elements em = form.select("em");
+        //System.out.println(em);
+        //System.out.println(em.size());
+
+        Elements buttonUnderForm = form.select("button");
+        //System.out.println(buttonUnderForm);
+        //System.out.println(buttonUnderForm.size());
+         */
     }
 
     public List<Document> scrapeContactForm(MyClient client, List<Company> companies) throws IOException {
