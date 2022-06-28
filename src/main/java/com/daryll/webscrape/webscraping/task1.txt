@@ -39,10 +39,22 @@
     You are not expected to create a working code. Create a diagram, combine it with pseudo code.
     Do what you can to present your idea. Give enough information that we can discuss the overall
     plan on how to solve the problem above.
-
+=====
+aboitiz:        [email, phone, message, subject]
+baihotel:       [email,      , message, subject]
+fullspeed:      [email, phone, message,        ]
+wellmade:       [email,      , message,        ]
+bluewater:      [email, phone, message,        ]
+waterfront:     [email, phone, message,        ]
+hmtower:        [email, phone,        ,        ]
+tesla:          [email, phone, message,        ]
+crownregency    [email, phone, message, subject]
+jpark:          [email,      , message, subject]
 =====
 returns a Document
-method scrapeContactForm(Element formElement, Client client)
+method scrapeContactForm(Elements formElements, Client client)
+    if size of formElements > 1
+        determine which is contact form
 
     scrape form with method post
     if found
@@ -79,3 +91,4 @@ method scrapeContactForm(Client client, List companies)
 
 
     return filledDocuments
+

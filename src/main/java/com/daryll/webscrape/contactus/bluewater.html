@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="icon" href="CMSv2.0/admin/uploads/other_settings/151513904396426100.png" type="image/png">
+    <title>Welcome to Our Home - Bluewater Maribago - Contact-us</title>
+</head>
+<body>
+
+<form method="post" id="contact_form">
+    <div class="col-sm-6 p0 fname_contact">
+        <input type="text" name="fname" placeholder="First Name" class="form-control contact_us_form">
+    </div>
+    <div class="col-sm-6 p0 lname_contact">
+        <input type="text" name="lname" placeholder="Last Name" class="form-control contact_us_form">
+    </div>
+    <div class="col-sm-12 p0">
+        <input type="text" name="email_address" placeholder="Email Address" class="form-control contact_us_form">
+    </div>
+    <div class="col-sm-12 p0">
+        <input type="text" name="contact_number" placeholder="Contact No." class="form-control contact_us_form">
+    </div>
+    <div class="col-sm-12 p0"><textarea name="message" placeholder="Message..." class="form-control contact_us_form" colspan="5"></textarea>
+    </div>
+    <div class="col-sm-12 p0">
+        <input type="hidden" id="secret_code" value="6LconysUAAAAAEaXEzRpkC9iVIX2RzUhbvVyeejW">
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <div class="g-recaptcha" id="g-recaptcha-response" name="g-recaptcha-response" data-sitekey="6LconysUAAAAAJAPr-ieUX-FLz6PEpMCJthJc7oV"></div>
+    </div>
+    <div class="col-sm-12 p0 mt10">
+        <input type="submit" class="btn btn-primary contact_us_submit" value="Send">
+    </div>
+</form>
+
+</body>
+</html>

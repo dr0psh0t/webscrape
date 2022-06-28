@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8">
+    <title>Contact Us:Crown Regency Hotels &amp; Reports</title>
+</head>
+<body>
+
+<form class="newsletter_subscription" style="margin-top:1rem">
+    <div class="row g-1">
+        <div class="col-11 col-md-9">
+            <input type="email" class="form-control" id="email" name="email" aria-label="Email Address">
+        </div>
+        <div class="col-1 col-md-3">
+            <button type="submit" class="btn btn-outline-light"><i class="la la-long-arrow-right"></i></button>
+        </div>
+    </div>
+</form>
+
+<form class="pop-reservation-form">
+    <div class="row g-1">
+        <div class="col-12">
+            <h2 class="title_indicator">Check Availability</h2>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+            <label for="location2">LOCATION</label><select id="location" name="location" class="form-select form-select-lg form-control"><option value="">-- Select Location</option><option selected value="cebu">Cebu</option><option value="boracay">Boracay</option><option value="manila">Manila</option><option value="davao">Davao</option></select>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+            <label for="checkin-out2">CHECK-IN/OUT DATE</label>
+            <input type="text" readonly name="checkin-out" class="form-control form-control-lg checkin-out" id="checkin-out" placeholder="Select Date">
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+            <label for="adults2">ADULTS</label>
+            <input type="text" name="person" class="form-control form-control-lg" id="adults2" value="2">
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+            <label for="children2">CHILDREN</label><select id="children2" name="children" class="form-select form-control form-select-lg"><option selected>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12" style="text-align:right">
+            <button type="submit" class="btn btn-gold btn-lg" style="margin-top:20px"><span class="search-text-indicator">Search</span></button>
+        </div>
+    </div>
+</form>
+
+<form class="contacts-form" id="contacts-form" data-aos="fade-left" data-aos-delay="300">
+    <div class="row g-1">
+        <div class="col-12 col-sm-6 col-md-6">
+            <label for="hotel">Hotel</label><select id="hotel" name="location" class="form-select form-control form-select-lg"><option>-- Select Location</option><option value="Crown Regency Hotel &amp; Towers - Cebu">Crown Regency Hotel &amp; Towers - Cebu</option><option value="Crown Regency Residences - Cebu">Crown Regency Residences - Cebu</option><option value="Crown Regency Resort &amp; Convention Center - Boracay">Crown Regency Resort &amp; Convention Center - Boracay</option><option value="Crown Regency Suites &amp; Residences - Mactan">Crown Regency Suites &amp; Residences - Mactan</option><option value="Crown Regency Prince Resort - Boracay">Crown Regency Prince Resort - Boracay</option><option value="Crown Regency Beach Resort - Boracay">Crown Regency Beach Resort - Boracay</option><option value="Crown Regency Courtyard Resort - Boracay">Crown Regency Courtyard Resort - Boracay</option><option value="Crown Regency Hotel - Makati">Crown Regency Hotel - Makati</option><option value="Crown Regency Residences - Davao">Crown Regency Residences - Davao</option></select>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+            <label for="inquiry_type">Inquiry Type</label><select id="inquiry_type" name="inquiry_type" class="form-select form-control form-select-lg"><option value="General">General</option><option value="Corporate Function">Corporate Function</option><option value="Government Function">Government Function</option><option value="Special Events">Special Events</option><option value="Confirm Bookings">Confirm Bookings</option><option value="Room Availability">Room Availability</option></select>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12">
+            <label for="name">Name</label>
+            <input type="text" name="name" class="form-control form-control-lg" id="name">
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" class="form-control form-control-lg" id="phone">
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+            <label for="email_address">Email Address</label>
+            <input type="email" name="email" class="form-control form-control-lg" id="email_address">
+        </div>
+        <div class="col-12 col-sm-12 col-md-12">
+            <label for="subject">Subject</label>
+            <input type="text" name="subject" class="form-control form-control-lg" id="subject">
+        </div>
+        <div class="col-12 col-sm-12 col-md-12">
+            <label for="message">Message</label><textarea rows="8" name="body" class="form-control" id="message"></textarea>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12" style="text-align:right">
+            <button type="submit" class="btn btn-danger btn-lg" style="margin-top:20px">Send Message</button>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>
