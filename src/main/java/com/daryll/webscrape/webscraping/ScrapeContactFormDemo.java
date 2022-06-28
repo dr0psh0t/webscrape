@@ -75,7 +75,8 @@ public class ScrapeContactFormDemo {
                         if (label == null) { parent = parent.parent(); }
                     }
 
-                    System.out.println("label="+label);
+                    System.out.println(label);
+                    System.out.println(eachInput);
                 }
             });
         }
