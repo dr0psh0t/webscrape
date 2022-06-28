@@ -61,17 +61,21 @@ public class ScrapeContactFormDemo {
                     </div>
                 </div>
                  */
-                boolean stat = !eachInput.attr("type").equals("hidden")
+                boolean isUserInput = !eachInput.attr("type").equals("hidden")
                         && !eachInput.attr("type").equals("submit")
                         && !eachInput.attr("type").equals("button");
 
-                if (stat) {
-                    Elements siblings = eachInput.siblingElements();
-                    System.out.println("siblings: "+eachInput);
+                if (isUserInput) {
 
-                    if (!siblings.isEmpty()) {
-                        System.out.println(siblings);
+                    Element parent = eachInput.parent();
+                    Element label = null;
+
+                    while (label == null) {
+                        label = parent.selectFirst("label");
+                        if (label == null) { parent = parent.parent(); }
                     }
+
+                    System.out.println("label="+label);
                 }
             });
         }
@@ -141,7 +145,8 @@ public class ScrapeContactFormDemo {
     }
 
     public static void test(MyClient client) throws IOException {
-        String url = "/Users/fst.user/Documents/springboot-apps/webscrape/src/main/java/com/daryll/webscrape/contactus/";
+        //String url = "/Users/fst.user/Documents/springboot-apps/webscrape/src/main/java/com/daryll/webscrape/contactus/";
+        String url = "D:\\daryll\\SpringBoot\\springbootapps\\webscrape\\src\\main\\java\\com\\daryll\\webscrape\\contactus\\";
         determineContactForm(Jsoup.parse(new File(url+FILES.get(company))), client);
     }
 
