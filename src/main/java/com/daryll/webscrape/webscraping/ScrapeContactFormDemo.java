@@ -61,8 +61,10 @@ public class ScrapeContactFormDemo {
                                     .replaceAll("[^a-zA-Z]", "")
                                     .replaceAll("\\s+","");
 
-                            if (attributes.contains("email")) { emailFound = true; }
-                            if (emailFound) { break; }
+                            if (attributes.contains("email")) {
+                                emailFound = true;
+                                break;
+                            }
                         }
 
                         if (emailFound) {
@@ -76,9 +78,7 @@ public class ScrapeContactFormDemo {
     }
 
     public static void scrapeForm(Element form, MyClient client) {
-        System.out.println(form);
 
-        /*
         Elements inputsUnderForm = form.select("input");
         Elements labels = form.select("label");
 
@@ -112,7 +112,6 @@ public class ScrapeContactFormDemo {
             txtarea.text(client.getMessage());
             System.out.println(txtarea);
         }
-         */
     }
 
     public static boolean isUserInput(Element in) {
