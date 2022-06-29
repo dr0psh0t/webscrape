@@ -27,46 +27,64 @@ public class ScrapeContactFormDemo {
             Map.entry("bluewater", "bluewater.html"), Map.entry("wellmade", "wellmade.html"),
             Map.entry("crownregency", "crownregency.html")
     );
-    static String company = "tesla";
+    static String company = "waterfront";
     public static void determineContactForm(Document document, MyClient client) {
         Element textarea = document.selectFirst("form textarea");
 
         if (textarea != null) {
             Element contactForm = textarea.parent();
-            while (!contactForm.nodeName().equals("form")) { contactForm = contactForm.parent(); }
+
+            while (!contactForm.nodeName().equals("form")) {
+                contactForm = contactForm.parent();
+            }
+
             scrapeForm(contactForm, client);
+        } else {
+            for (Element form : document.select("form")) {
+                Elements labels = form.select("label");
+
+                if (labels.text().toLowerCase().contains("email") || labels.text().toLowerCase().contains("e-mail")) {
+                    scrapeForm(form, client);  //  form has label email. scrape form
+                    break;
+                } else {
+                    if (form.selectFirst("input[type=email]") != null) {
+                        scrapeForm(form, client);  //  form has no label email. scrape form
+                        break;
+                    } else {
+                        Elements textInputs = form.select("input[type=text]");
+                        boolean emailFound = false;
+
+                        for (Element textInput : textInputs) {
+
+                            String attributes = textInput.attr("name")+textInput.attr("id")
+                                    +textInput.attr("placeholder").toLowerCase()
+                                    .replaceAll("[^a-zA-Z]", "")
+                                    .replaceAll("\\s+","");
+
+                            if (attributes.contains("email")) { emailFound = true; }
+                            if (emailFound) { break; }
+                        }
+
+                        if (emailFound) {
+                            scrapeForm(form, client);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 
     public static void scrapeForm(Element form, MyClient client) {
-        Elements inputsUnderForm = form.select("input");
+        System.out.println(form);
 
+        /*
+        Elements inputsUnderForm = form.select("input");
         Elements labels = form.select("label");
-        Element txtarea = form.selectFirst("textarea");
-        txtarea.text(client.getMessage());
 
         if (!labels.isEmpty()) {
             inputsUnderForm.forEach(eachInput -> {
-                /*
-                <div>
-                    <label>First Name </label>
-                    <div>
-                        <input type="text" id="edit-firstname" name="firstname" value="" size="60" maxlength="50">
-                    </div>
-                </div>
-                <div>
-                    <label>Last Name </label>
-                    <div>
-                        <input type="text" id="edit-lastname" name="lastname" value="" size="60" maxlength="50">
-                    </div>
-                </div>
-                 */
-                boolean isUserInput = !eachInput.attr("type").equals("hidden")
-                        && !eachInput.attr("type").equals("submit")
-                        && !eachInput.attr("type").equals("button");
-
-                if (isUserInput) {
-
+                if (isUserInput(eachInput)) {
                     Element parent = eachInput.parent();
                     Element label = null;
 
@@ -75,88 +93,63 @@ public class ScrapeContactFormDemo {
                         if (label == null) { parent = parent.parent(); }
                     }
 
-                    System.out.println(label);
-                    System.out.println(eachInput);
+                    fillInputs(eachInput, label.text(), client);
                 }
             });
+        } else {
+            inputsUnderForm.forEach(eachInput -> {
+                if (isUserInput(eachInput)) {
+                    fillInputs(eachInput, eachInput.attr("placeholder"), client);
+                }
+            });
+
         }
 
-        /*
-        inputsUnderForm.forEach(eachInput -> {
+        System.out.println("FILLED FORM: \n\n"+inputsUnderForm);
+        Element txtarea = form.selectFirst("textarea");
 
-            if (!labels.isEmpty()) {
-                Elements siblingsOfInput = eachInput.siblingElements();
-
-                siblingsOfInput.forEach(sibling -> {
-
-                    if (sibling.nodeName().equalsIgnoreCase("label")) {
-                        String lblTxt = sibling.text().toLowerCase()
-                                .replaceAll("[^a-zA-Z]", "")
-                                .replaceAll("\\s+","");
-
-                        if ("firstname".contains(lblTxt)) {
-                            eachInput.attr("value", client.getFirstname());
-                        } else if ("lastname".contains(lblTxt)) {
-                            eachInput.attr("value", client.getLastname());
-                        } else if ("companyname".contains(lblTxt)) {
-                            eachInput.attr("value", client.getCompanyName());
-                        } else if ("subject".contains(lblTxt)) {
-                            eachInput.attr("value", client.getSubject());
-                        } else if ("address".contains(lblTxt)) {
-                            eachInput.attr("value", client.getAddress());
-                        } else if ("emailaddress".contains(lblTxt)) {
-                            eachInput.attr("value", client.getEmail());
-                        } else if ("phonenumbercontactnumber".contains(lblTxt)) {
-                            eachInput.attr("value", client.getContactNumber());
-                        }
-                    }
-                });
-            } else {
-
-                boolean stat = !eachInput.attr("type").equals("hidden")
-                        && !eachInput.attr("type").equals("submit")
-                        && !eachInput.attr("type").equals("button");
-
-                if (stat) {
-
-                    String placeholder = eachInput.attr("placeholder").toLowerCase()
-                            .replaceAll("[^a-zA-Z]", "").replaceAll("\\s+","");
-
-                    if ("firstname".contains(placeholder)) {
-                        eachInput.attr("value", client.getFirstname());
-                    } else if ("lastname".contains(placeholder)) {
-                        eachInput.attr("value", client.getLastname());
-                    } else if ("companyname".contains(placeholder)) {
-                        eachInput.attr("value", client.getCompanyName());
-                    } else if ("subject".contains(placeholder)) {
-                        eachInput.attr("value", client.getSubject());
-                    } else if ("address".contains(placeholder)) {
-                        eachInput.attr("value", client.getAddress());
-                    } else if ("emailaddress".contains(placeholder)) {
-                        eachInput.attr("value", client.getEmail());
-                    } else if ("phonenumbercontactnumbercontactno".contains(placeholder)) {
-                        eachInput.attr("value", client.getContactNumber());
-                    }
-                }
-            }
-        });
-
-        System.out.println(form);
+        if (txtarea != null) {
+            txtarea.text(client.getMessage());
+            System.out.println(txtarea);
+        }
          */
     }
 
+    public static boolean isUserInput(Element in) {
+        return !in.attr("type").equals("hidden")
+                && !in.attr("type").equals("submit") && !in.attr("type").equals("button");
+    }
+
+    public static void fillInputs(Element eachInput, String lblPlaceholder, MyClient client) {
+        lblPlaceholder = lblPlaceholder.toLowerCase()
+                .replaceAll("[^a-zA-Z]", "").replaceAll("\\s+","");
+
+        if ("firstname".contains(lblPlaceholder)) {
+            eachInput.attr("value", client.getFirstname());
+        } else if ("lastname".contains(lblPlaceholder)) {
+            eachInput.attr("value", client.getLastname());
+        } else if ("companyname".contains(lblPlaceholder)) {
+            eachInput.attr("value", client.getCompanyName());
+        } else if ("subject".contains(lblPlaceholder)) {
+            eachInput.attr("value", client.getSubject());
+        } else if ("address".contains(lblPlaceholder)) {
+            eachInput.attr("value", client.getAddress());
+        } else if ("emailaddress".contains(lblPlaceholder)) {
+            eachInput.attr("value", client.getEmail());
+        } else if ("phonenumbercontactnumbercontactno".contains(lblPlaceholder)) {
+            eachInput.attr("value", client.getContactNumber());
+        }
+    }
+
     public static void test(MyClient client) throws IOException {
-        //String url = "/Users/fst.user/Documents/springboot-apps/webscrape/src/main/java/com/daryll/webscrape/contactus/";
-        String url = "D:\\daryll\\SpringBoot\\springbootapps\\webscrape\\src\\main\\java\\com\\daryll\\webscrape\\contactus\\";
+        String url = "/Users/fst.user/Documents/springboot-apps/webscrape/src/main/java/com/daryll/webscrape/contactus/";
+        //String url = "D:\\daryll\\SpringBoot\\springbootapps\\webscrape\\src\\main\\java\\com\\daryll\\webscrape\\contactus\\";
         determineContactForm(Jsoup.parse(new File(url+FILES.get(company))), client);
     }
 
     public List<Document> scrapeContactForm(MyClient client, List<Company> companies) throws IOException {
-
         Document document = Jsoup.connect("https://www.hmtower.com/").get();
-
         System.out.println(document.html());
-
         return null;
     }
 
