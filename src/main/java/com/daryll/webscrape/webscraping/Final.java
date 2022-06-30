@@ -26,7 +26,7 @@ public class Final {
             .build();
 
     static Set<Company> companies = Set.of(
-            new Company("aboitiz", "https://aboitiz.com/")/*,
+            new Company("aboitiz", "https://aboitiz.com/"),
                 new Company("baihotel", "https://www.baihotels.com/"),
                 new Company("fullspeed", "https://www.fullspeedtechnologies.com/"),
                 new Company("hmtower", "https://www.hmtower.com/"),
@@ -34,7 +34,7 @@ public class Final {
                 //new Company("waterfront", "https://www.waterfronthotels.com.ph/"),
                 new Company("wellmade", "https://www.wellmade-motors.com/"),
                 new Company("bluewater", "https://www.bluewatermaribago.com.ph/"),
-                new Company("crownregency", "https://www.crownregency.com/")*/
+                new Company("crownregency", "https://www.crownregency.com/")
     );
 
     public static void main(String[] args) throws IOException {
