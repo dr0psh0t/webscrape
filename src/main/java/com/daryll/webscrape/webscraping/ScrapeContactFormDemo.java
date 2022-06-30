@@ -1,5 +1,7 @@
 package com.daryll.webscrape.webscraping;
 
+import org.apache.commons.validator.routines.UrlValidator;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,7 +29,7 @@ public class ScrapeContactFormDemo {
             Map.entry("bluewater", "bluewater.html"), Map.entry("wellmade", "wellmade.html"),
             Map.entry("crownregency", "crownregency.html")
     );
-    static String company = "waterfront";
+    static String company = "aboitiz";
     public static void determineContactForm(Document document, MyClient client) {
         Element textarea = document.selectFirst("form textarea");
 
@@ -105,13 +107,13 @@ public class ScrapeContactFormDemo {
 
         }
 
-        System.out.println("FILLED FORM: \n\n"+inputsUnderForm);
         Element txtarea = form.selectFirst("textarea");
-
         if (txtarea != null) {
             txtarea.text(client.getMessage());
-            System.out.println(txtarea);
         }
+
+        Document document = Jsoup.parse(form.parents().select("html").first().html());
+        System.out.println(document);
     }
 
     public static boolean isUserInput(Element in) {
@@ -146,12 +148,6 @@ public class ScrapeContactFormDemo {
         determineContactForm(Jsoup.parse(new File(url+FILES.get(company))), client);
     }
 
-    public List<Document> scrapeContactForm(MyClient client, List<Company> companies) throws IOException {
-        Document document = Jsoup.connect("https://www.hmtower.com/").get();
-        System.out.println(document.html());
-        return null;
-    }
-
     public static void main(String[] args) throws IOException {
         MyClient myClient = new MyClient.Builder()
                 .companyName("Apple Inc")
@@ -163,7 +159,108 @@ public class ScrapeContactFormDemo {
                 .subject("Inquiry")
                 .message("Greetings From Apple Inc! I have some inquiry regarding your product.")
                 .build();
-        test(myClient);
+
+        //test(myClient);
+
+        Set<Company> companies = Set.of(
+                new Company("aboitiz", "https://aboitiz.com/"),
+                new Company("baihotel", "https://www.baihotels.com/"),
+                new Company("fullspeed", "https://www.fullspeedtechnologies.com/"),
+                new Company("hmtower", "https://www.hmtower.com/"),
+                new Company("tesla", "https://www.tesla.com/"),
+                new Company("waterfront", "https://www.waterfronthotels.com.ph/"),
+                new Company("wellmade", "https://www.wellmade-motors.com/"),
+                new Company("bluewater", "https://www.bluewatermaribago.com.ph/"),
+                new Company("crownregency", "https://www.crownregency.com/")
+        );
+
+        Set<String> list = companies.stream().map(company -> {
+            try {
+                System.out.println("SITE="+company.getWebsite());
+
+                Document document = Jsoup.connect(company.getWebsite()).timeout(30000).get();
+                Element a1 = document.selectFirst("a:contains(contact us)");    //  doc.select("div:contains(Pantry/Catering)").get(1)
+
+                if (a1 != null) {
+                    return scrapeLink(a1.attr("href"), company.getWebsite());
+                } else {
+                    Element a2 = document.selectFirst("a:contains(contact)");
+
+                    if (a2 != null) {
+                        return scrapeLink(a2.attr("href"), company.getWebsite());
+                    } else {
+
+                        if (isContactFormFound(document)) {
+                            //  scrape form
+                            //System.out.println("found contact page at "+company.getWebsite());
+
+                        } else {
+                            for (String eachUrl : List.of("contact-us", "contact", "Contact-Us", "Contact",
+                                    "CONTACT-US", "CONTACT")) {
+                                try {
+                                    Document doc404 = Jsoup.connect(company.getWebsite()+eachUrl).get();
+                                    System.out.println("found contact page at "+company.getWebsite()+eachUrl);
+                                    //  scrape link
+                                    break;
+                                } catch (HttpStatusException ex) { }
+                            }
+                        }
+                    }
+                }
+
+                System.out.println();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }).collect(Collectors.toSet());
+    }
+
+    public static Document scrapeLink(String href, String site) {
+        if (new UrlValidator().isValid(href)) {
+            System.out.println("found contact page at "+href);
+        } else {
+            System.out.println("found contact page at "+site+href.replaceAll("[^a-zA-Z]", ""));
+        }
+    }
+
+    public static boolean isContactFormFound(Document document) {
+        Element textarea = document.selectFirst("form textarea");
+
+        if (textarea != null) {
+            Element contactForm = textarea.parent();
+
+            while (!contactForm.nodeName().equals("form")) {
+                contactForm = contactForm.parent();
+            }
+
+            return contactForm.nodeName().equals("form");
+        } else {
+            for (Element form : document.select("form")) {
+                Elements labels = form.select("label");
+
+                if (labels.text().toLowerCase().contains("email") || labels.text().toLowerCase().contains("e-mail")) {
+                    return true;
+                } else {
+                    if (form.selectFirst("input[type=email]") != null
+                            && form.selectFirst("input[type=number]") != null) {
+                        //System.out.println("fuck");
+                        return true;
+                    } else {
+
+                        for (Element textInput : form.select("input[type=text]")) {
+                            String attributes = textInput.attr("name")+textInput.attr("id")
+                                    +textInput.attr("placeholder").toLowerCase()
+                                    .replaceAll("[^a-zA-Z]", "")
+                                    .replaceAll("\\s+","");
+
+                            if (attributes.contains("email")) { return true; }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public static class Company {
