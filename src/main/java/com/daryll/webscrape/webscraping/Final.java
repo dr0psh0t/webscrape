@@ -14,20 +14,19 @@ import java.util.stream.Collectors;
 
 public class Final {
 
-    public static void main(String[] args) throws IOException {
-        MyClient myClient = new MyClient.Builder()
-                .companyName("Apple Inc")
-                .address("California")
-                .contactNumber("0987654321")
-                .email("apple@gmail.com")
-                .firstname("Steve")
-                .lastname("Jobs")
-                .subject("Inquiry")
-                .message("Greetings From Apple Inc! I have some inquiry regarding your product.")
-                .build();
+    static MyClient myClient = new MyClient.Builder()
+            .companyName("Apple Inc")
+            .address("California")
+            .contactNumber("0987654321")
+            .email("apple@gmail.com")
+            .firstname("Steve")
+            .lastname("Jobs")
+            .subject("Inquiry")
+            .message("Greetings From Apple Inc! I have some inquiry regarding your product.")
+            .build();
 
-        Set<Company> companies = Set.of(
-                new Company("aboitiz", "https://aboitiz.com/")/*,
+    static Set<Company> companies = Set.of(
+            new Company("aboitiz", "https://aboitiz.com/")/*,
                 new Company("baihotel", "https://www.baihotels.com/"),
                 new Company("fullspeed", "https://www.fullspeedtechnologies.com/"),
                 new Company("hmtower", "https://www.hmtower.com/"),
@@ -36,8 +35,9 @@ public class Final {
                 new Company("wellmade", "https://www.wellmade-motors.com/"),
                 new Company("bluewater", "https://www.bluewatermaribago.com.ph/"),
                 new Company("crownregency", "https://www.crownregency.com/")*/
-        );
+    );
 
+    public static void main(String[] args) throws IOException {
         Set<Document> set = companies.stream().map(company -> {
             try {
                 Document document = Jsoup.connect(company.getWebsite()).timeout(30000).get();
@@ -64,13 +64,13 @@ public class Final {
 
                                 } catch (HttpStatusException ex) {}
                             }
-                            return new Document("<!DOCTYPE html><html><head></head><body>IOException</body></html>");
+                            return new Document("<html><head></head><body>IOException</body></html>");
                         }
                     }
                 }
 
             } catch (IOException e) {
-                return new Document("<!DOCTYPE html><html><head></head><body>IOException</body></html>");
+                return new Document("<html><head></head><body>IOException</body></html>");
             }
         }).collect(Collectors.toSet());
 
@@ -122,7 +122,7 @@ public class Final {
                     }
                 }
             }
-            return new Document("<!DOCTYPE html><html><head></head><body>IOException</body></html>");
+            return new Document("<html><head></head><body>IOException</body></html>");
         }
     }
 

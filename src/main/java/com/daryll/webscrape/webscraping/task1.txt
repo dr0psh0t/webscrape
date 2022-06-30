@@ -39,7 +39,10 @@
     You are not expected to create a working code. Create a diagram, combine it with pseudo code.
     Do what you can to present your idea. Give enough information that we can discuss the overall
     plan on how to solve the problem above.
+
 =====
+companies with their contact form fields:
+
 aboitiz:        [email, phone, message, subject]
 baihotel:       [email,      , message, subject]
 fullspeed:      [email, phone, message,        ]
@@ -51,44 +54,61 @@ tesla:          [email, phone, message,        ]
 crownregency    [email, phone, message, subject]
 jpark:          [email,      , message, subject]
 =====
-returns a Document
-method scrapeContactForm(Elements formElements, Client client)
-    if size of formElements > 1
-        determine which is contact form
 
-    scrape form with method post
-    if found
-        loop through each inputs
-            get the <label> sibling for each input
-                if label element sibling is found
-                    get text of label to know the type of input field
-                    scrape <input> elements (ignore type=hidden) fill the input with client data
-                else if label element is not found
-                    get each name or placeholder attribute for each input
-                    scrape <input> elements (ignore type=hidden) fill input field with client data based on
+initialize a client instance
+initialize a set of companies
 
-=====
-returns list of Documents
-method scrapeContactForm(Client client, List companies)
+void main():
+    foreach company in companies, return a set of Documents:
+        try:
+            scrape company website
+            get element which contains text "contact us"
 
-    initialize empty list of filledDocuments
+            if element is found:
+                scrape href link and return Document
+            else:
+                get element which contains text "contact"
 
-    loop through companies list
-        scrape homepage
-        look for a text "contact us" or "contact" (ignore case)
-        if "contact us" or "contact" text is found
-            if "contact us" or "contact" is a hyperlink
-                scrape that "contact us" hyperlink
-                    look for a "submit" button
-                    if "submit" button is found
-                        newDoc = scrapeContactForm(formElement, client)
-                        store newDoc to filledDocuments
-            else if "contact us" or "contact" is just a text
-                look for a "submit" button
-                if "submit" button is found
-                    newDoc = scrapeContactForm(formElement, client)
-                    store newDoc to filledDocuments
+                if element is found:
+                    scrape href link and return Document
+                else:
+                    look for contact form in homepage
 
+                    if contact form is found:
+                        scrape the form and return Document
+                    else:
+                        foreach mapping in ["contact-us","contact","Contact-Us","Contact","CONTACT-US", "CONTACT"]:
+                            scrape company website by concatting home+mapping
+                            if 404 status is not thrown:
+                                scrape the form and return Document
+                        return Dummy Document
+        catch:
+            return Dummy Document
 
-    return filledDocuments
+Document scrapeLink(href, site, client):
+    if href is valid url:
+        scrape href and return Document
+    else:
+        scrape site+href and return Document
 
+Document determineContactForm(document, client):
+    get textarea element from form
+
+    if text is found:
+        get the parent of textarea which is form
+        scrape the form and return document
+    else:
+        foreach form from  forms in the page:
+            get all labels
+            if any label contains a text "email":
+                scrape the form and return document
+            else:
+                get all input elements which has a type=text attribute
+
+                for each input from input elements:
+                     look for an attribute name, id, placeholder with a value of "email"
+
+                     if any name,id,placeholder attributes contains "email"
+                        scrape form and return document
+
+        return Dummy Document
